@@ -6,7 +6,7 @@ function Messages(props) {
         <div>
             <h3>Messages</h3>
             <ul>
-                {props.messages.messages.map((msg, ind) => <li key={ind}>{msg.from + ":..." + msg.message}</li>)}
+                {props.messages.messages.map((msg, ind) => <li key={ind}>{msg.from + ": " + msg.message}</li>)}
             </ul>
         </div>
     )
