@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
+      <link rel="stylesheet" type="text/css" href="index.css">
+      <title>Node Chat</title>
+  </head>
+  <body>
+    <div class="container">
+      <!-- LOGIN FORM -->
+      <div id="login">
+        <h1 class="text-center mt-5">Chat101</h1>
+        <div class="row">
+          <div class="col-md-6 m-auto">
+            <div class="card card-body pt-4 px-4">
+              <form id="loginForm" action="/users/login" method="POST">
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="form-control"
+                    placeholder="Enter username"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Enter password"
+                  />
+                </div>
+                <div class="custom-control custom-switch mb-3">
+                  <input type="checkbox" class="custom-control-input" id="remember">
+                  <label class="custom-control-label" for="remember">Remember Me</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+              </form>
+              <p class="lead small mt-4">
+                You don't have an account? <a href="#">Register here</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- END OF LOGIN -->
+    </div>
+    <!-- MAIN PAGE -->
+    <div id="main">
+      <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">CHAT-101</a>
+        <div class="nav-item dropdown nav-pills">
+          <a class="nav-link dropdown-toggle" id="nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Username</a>
+          <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: -20%; transform: translate3d(0, 40px, 0px);">
+            <a class="dropdown-item" id="logout" href="#">Logout</a>
+          </div>
+        </div>    
+        <div class="navbar-collapse" id="navbarColor03">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">#general <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">#gaming</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div id="content" class="row m-0">
+        <div class="col-2 bg-secondary pt-4 online-area">
+          <h5>ONLINE - <span id="online-count"></span></h5>
+          <ul class="list-group list-online">
+            
+          </ul>
+        </div>
+        <div class="col-10 bg-light main-area p-0">
+          <div class="chat mx-0">
+            <ul class="chat-list pt-1">
+              <li class="chat-message bg-primary">
+              </li>
+            </ul>
+          </div>
+          <form id="messageForm" class="send form-group row mx-2 d-flex">
+            <input
+              type="text"
+              id="newmsg"
+              name="newmsg"
+              autocomplete="off"
+              class="form-control col-10 my-auto"
+              placeholder="Enter a new message"
+            />
+            <button type="submit" class="btn btn-primary btn-outline col-2 my-auto">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- END OF MAIN PAGE -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      $(function(){
+        var socket = io.connect();
+        var $messageForm = $('#messageForm');
+        var $usersOnline = $('.list-online');
+        var $loginForm = $('#loginForm'); 
+        var $username = $('#username');
+        
+        $("#logout").click(function(e) {
+          e.preventDefault();
+          socket.disconnect();
+          location.reload();
+        });
+
+        $messageForm.submit(function(e){
+          e.preventDefault();
+          message = e.target[0].value;
+          if ( !message ) {
+            return
+          }
+          socket.emit('send_message', message);
+          e.target[0].value = '';
+          $(".chat-list").append('<li class="chat-message bg-secondary"><span id="from" class="text-dark">Me</span><span id="from" class="text-dark">14:56</span><p id="message">'+message+'</p></li>')
+          $(".chat").scrollTop($(".chat")[0].scrollHeight);
+        });
+
+        $loginForm.submit(function(e){
+          e.preventDefault();
+          user = $username.val();
+          socket.emit('new_user', user, function(data) {
+            if (data) {
+              $("#login").css("display", "none");
+              $("#main").css("display", "block");
+              $("#nav-user").html(user);
+            } else {
+              alert("Username taken");
+            }
+          });
+        });
+
+        socket.on('new_message', function(data){
+          $(".chat-list").append('<li class="chat-message bg-primary"><span id="from" class="text-dark">'+data.user+'</span><p id="message">'+data.msg+'</p></li>')
+          $(".chat").scrollTop($(".chat")[0].scrollHeight);
+        });
+
+        socket.on('usernames', function(usernames) {
+          $usersOnline.empty();
+          var counter = usernames.length;
+          $("#online-count").html(counter);
+          usernames.forEach(user => {
+            $usersOnline.append('<li class="list-group-item online">'+user+'</li>')
+          });
+        });
+
+
+        
+      });
+
+    </script>
+  </body>
+</html>
