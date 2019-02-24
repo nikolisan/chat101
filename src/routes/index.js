@@ -16,7 +16,7 @@ const routes = (
       <Route exact path="/" component={Home} />
       <Route exact path="/register" component={Register} />
       <Route exact path="/login" component={Login} />
-      <Route path="/chat" component={Chatroom} />
+      <Route path="/chat/:id?" component={Chatroom} />
       <Route component={NoMatch} />
     </Switch>
   </div>

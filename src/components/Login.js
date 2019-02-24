@@ -33,7 +33,7 @@ class Login extends Component {
     
     componentWillReceiveProps(nextProps) {
         if(nextProps.auth.isAuthenticated) {
-            this.props.history.push('/chat')
+            this.props.history.push('/chat/general')
         }
         if (nextProps.errors) {
             this.setState({
@@ -44,7 +44,7 @@ class Login extends Component {
     
     componentDidMount() {
         if(this.props.auth.isAuthenticated) {
-            this.props.history.push('/chat');
+            this.props.history.push('/chat/general');
         }
     }
 

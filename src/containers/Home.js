@@ -7,9 +7,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    loginUser: (item) => {
-        dispatch(loginUser(item))
-    }
+    
 })
 
 export const Home = connect(mapStateToProps, mapDispatchToProps)(HomeComponent)

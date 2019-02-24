@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 class Chatroom extends Component {
     constructor(props) {
         super(props)
+        this.chatRoomId = this.props.match.params.id
     }
 
     componentDidMount(){
@@ -18,8 +19,8 @@ class Chatroom extends Component {
 
     render() {
         return (
-            <div className="container">
-                <h1 className="display-4">Chatroom</h1>
+            <div className="container text-center">
+                <h1 className="display-4">Chatroom { this.chatRoomId && '#'+this.chatRoomId }</h1>
             </div>
         )
     }
