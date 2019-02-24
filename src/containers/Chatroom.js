@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ChatroomComponent from '../components/Chatroom';
-import { socketConnect, socketDisconnect } from '../redux/actions/socketAction';
+import { socketConnect, socketDisconnect, socketSendMessage } from '../redux/actions/socketAction';
 
 const mapStateToProps = state => {
     return state
@@ -12,6 +12,9 @@ const mapDispatchToProps = dispatch => ({
     },
     socketDisconnect: () => {
         dispatch(socketDisconnect())
+    },
+    socketSendMessage: (message) => {
+        dispatch(socketSendMessage(message))
     }
 })
 

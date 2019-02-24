@@ -29,15 +29,14 @@ const PORT = process.env.PORT || 9000;
 server.listen(PORT)
 console.log('Server running on port: ' + PORT);
 
+
 function updateUsernames() {
     io.sockets.emit('usernames', usernames);
 }
 
 io.sockets.on('connection', function(socket) {
     console.log("Socket connected with id "+ socket.id);
-    socket.emit('messages.new', {message: socket.id})
     
-    let val = 0;
     socket.on('SET_USERNAME', function(data){
         console.log(data)
         socket.username = data.username;
@@ -47,9 +46,8 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('SEND_MESSAGE', function(data){
-        val += 1
         console.log('new message recieved to the server')
-        socket.emit('ReceiveMessage', {message: val})
+        socket.emit('NEW_MESSAGE', {message: data.message, from: data.from})
         // socket.username = data;
         // usernames.push(socket.username);
         // console.log('Username for id', socket.id, 'is: ', socket.username)

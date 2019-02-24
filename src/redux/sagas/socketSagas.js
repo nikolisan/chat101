@@ -23,9 +23,8 @@ function subscribe(socket) {
     socket.on('users.logout', ({ username }) => {
       emit(socketRemoveUser({ username }));
     });
-    socket.on('messages.new', ({ message }) => {
-      console.log(message)
-      emit(socketNewMessage({ message }));
+    socket.on('NEW_MESSAGE', ({ message, from }) => {
+      emit(socketNewMessage({message, from}));
     });
     socket.on('disconnect', e => {
       // todo: send msg disconnected to the server
@@ -44,8 +43,8 @@ function* read(socket) {
 
 function* write(socket) {
   while (true) {
-    const { payload } = yield take(`${socketNewMessage}`);
-    socket.emit('message', payload);
+    const { message } = yield take(types.sSEND_MESSAGE);
+    socket.emit('SEND_MESSAGE', message);
   }
 }
 

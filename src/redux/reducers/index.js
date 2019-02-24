@@ -4,6 +4,7 @@ import errorReducer from './errorReducer';
 import authReducer from './authReducer';
 import flashMessageReducer from './flashMessageReducer';
 import socketReducer from './socketReducer';
+import messagesReducer from './messagesReducer';
 
 
 export default (history) => combineReducers ({
@@ -11,5 +12,6 @@ export default (history) => combineReducers ({
     errors: errorReducer,
     auth: authReducer,
     flash: flashMessageReducer,
-    socket: socketReducer
+    socket: socketReducer,
+    messages: messagesReducer,
 });

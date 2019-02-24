@@ -32,9 +32,10 @@ export const socketNewMessage = (message) => {
     })
 }
 
-export const socketSendMessage = () => {
+export const socketSendMessage = (message) => {
     return({
-        type: types.sSEND_MESSAGE
+        type: types.sSEND_MESSAGE,
+        message
     })
 }
 
