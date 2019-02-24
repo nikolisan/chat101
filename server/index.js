@@ -35,11 +35,12 @@ function updateUsernames() {
 
 io.sockets.on('connection', function(socket) {
     console.log("Socket connected with id "+ socket.id);
-    // socket.emit('ReceiveMessage', {message: socket.id})
+    socket.emit('messages.new', {message: socket.id})
     
     let val = 0;
     socket.on('SET_USERNAME', function(data){
-        socket.username = data;
+        console.log(data)
+        socket.username = data.username;
         usernames.push(socket.username);
         console.log('Username for id', socket.id, 'is: ', socket.username)
         updateUsernames();

@@ -1,6 +1,8 @@
 import { all } from 'redux-saga/effects';
 
 import { loginWatcher, registerWatcher, logoutWatcher } from './authSagas';
+import authSagas from './authSagas';
+import socketSagas from './socketSagas';
 
 // export the saga watchers
 export default function* rootSaga() {
@@ -8,5 +10,6 @@ export default function* rootSaga() {
         loginWatcher(),
         registerWatcher(),
         logoutWatcher(),
+        socketSagas()
     ])
 }

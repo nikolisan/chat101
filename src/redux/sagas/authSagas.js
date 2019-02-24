@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { takeEvery, call, put } from 'redux-saga/effects';
+import { all, takeEvery, call, put } from 'redux-saga/effects';
+import takeFirst from './utils/takeFirst';
 
 import * as types from '../constants/types';
 import setAuthToken from '../../utils/setAuthToken';
@@ -58,9 +59,17 @@ export function* registerWatcher() {
 }
 
 export function* loginWatcher() {
-    yield takeEvery(types.LOGIN_USER, loginUserAsync)
+    yield takeFirst(types.LOGIN_USER, loginUserAsync)
 }
 
 export function* logoutWatcher() {
     yield takeEvery(types.LOGOUT_USER, logoutUserAsync)
+}
+
+export default function* authSaga() {
+    yield all([
+        loginWatcher(),
+        registerWatcher(),
+        logoutWatcher(),
+    ])
 }
