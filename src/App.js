@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { ConnectedRouter } from 'connected-react-router';
 import routes from './routes';
 
+import './css/main.css'
+
 const App = ({ history }) => {
   return (
     <ConnectedRouter history={history}>

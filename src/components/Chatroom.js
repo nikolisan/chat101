@@ -2,18 +2,19 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import Messages from './Messages';
+import SendForm from './SendForm';
+
+import '../css/chatroom.css'
 
 class Chatroom extends Component {
     constructor(props) {
         super(props)
         this.chatRoomId = this.props.match.params.id
-        this.handleTestClick = this.handleTestClick.bind(this)
+        this.handleFormSubmit = this.handleFormSubmit.bind(this)
     }
 
     componentDidMount(){
         console.log('Chatroom did mount')
-        // this.props.socketConnect(this.props.auth.user)
-        // this.props.startChannel()
         this.props.socketConnect(this.props.auth.user)
     }
 
@@ -24,19 +25,27 @@ class Chatroom extends Component {
     componentWillUnmount() {
         console.log('Chatroom will unmount')
         this.props.socketDisconnect()
-        // this.props.stopChannel()
     }
 
-    handleTestClick() {
-        this.props.socketSendMessage({message: "test message", from: this.props.auth.user.username})
+    handleFormSubmit(message) {
+        this.props.socketSendMessage({message: message, from: this.props.auth.user.username})
+        this.props.socketNewMessage({message: message, from: 'Me'})
     }
 
     render() {
         return (
-            <div className="container text-center">
-                <h1 className="display-4">Chatroom { this.chatRoomId && '#'+this.chatRoomId }</h1>
-                <button onClick={() => this.handleTestClick()}>Send Test Message</button>
-                {/* <Messages messages={this.props.messages}/> */}
+            <div id="content" className="row m-0">
+                <div className="col-2 bg-secondary pt-4 online-area">
+                    <h4>Chatroom { this.chatRoomId && '#'+this.chatRoomId }</h4>
+                    <h5>ONLINE - <span id="online-count">15</span></h5>
+                    <ul class="list-group list-online">
+                        <li class="list-group-item online">user</li>
+                    </ul>
+                </div>
+                <div className="col-10 bg-light main-area p-0">
+                    <Messages messages={this.props.messages}/>
+                    <SendForm sendMessage={this.handleFormSubmit}/>
+                </div>
             </div>
         )
     }

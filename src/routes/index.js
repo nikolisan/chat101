@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route, Switch } from 'react-router'
-import { connect } from 'react-redux';
 
 import NoMatch from '../components/NoMatch';
 import { Navbar } from '../containers/Navbar';
@@ -10,7 +9,7 @@ import { Login } from '../containers/Login';
 import { Chatroom } from '../containers/Chatroom';
 
 const routes = (
-  <div>
+  <div id="main">
     <Navbar />
     <Switch>
       <Route exact path="/" component={Home} />

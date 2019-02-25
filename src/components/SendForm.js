@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import '../css/InputMessage.css'
+
 class SendForm extends Component {
     constructor(props) {
         super(props)
@@ -19,19 +21,18 @@ class SendForm extends Component {
     handleSumbit(e) {
         e.preventDefault();
         this.props.sendMessage(this.state.message)
+        this.setState({
+            message: ""
+        })
     }
 
     render() {
         return (
-            <div className="container">
-                <form className="form-inline" onSubmit={ this.handleSumbit }>
-                    <div className="form-group">
-                        <label htmlFor="msgBox" className="sr-only">Input Message</label>
-                        <input type="text" className="form-text" id="msgBox" value={this.state.message} placeholder="Enter your message" onChange={this.onInputChange}></input>
-                    </div>
-                    <button type="submit" className="btn btn-primary">Send</button>
-                </form>
-            </div>
+            <form className="send form-group row mx-2 d-flex" onSubmit={ this.handleSumbit }>
+                <label htmlFor="msgBox" className="sr-only">Input Message</label>
+                <input type="text" className="form-control col-10 my-auto" id="msgBox" autoComplete="off" value={this.state.message} placeholder="Enter your message" onChange={this.onInputChange}></input>
+                <button type="submit" className="btn btn-primary btn-outline col-2 my-auto">Send</button>
+            </form>
         )
     }
 }

@@ -1,0 +1,9 @@
+.list-online {
+    height: 90%;
+    overflow-y: auto;
+}
+.online {
+    cursor: pointer;
+}.online:hover {
+    background: #888;
+}

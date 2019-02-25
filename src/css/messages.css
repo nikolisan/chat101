@@ -1,0 +1,26 @@
+.chat-message {
+    display: block;
+    width: 80%;
+    border-radius: 5px;
+    padding: 0 0.2em;
+    margin: 0 auto;
+}
+.chat{
+    height: 90%;
+    overflow-y: auto;
+  }
+.chat-list {
+    padding: 1em 0 0 0 !important;
+  }
+
+#from {
+    padding: 0 0.5em;
+    font-size: 0.9em;
+    float: left;
+}
+#message {
+    clear: both;
+    padding: 0.1em 0.5em;
+    text-align: justify;
+    min-height: 30px;
+}
