@@ -12,6 +12,8 @@ class Chatroom extends Component {
 
     componentDidMount(){
         console.log('Chatroom did mount')
+        // this.props.socketConnect(this.props.auth.user)
+        // this.props.startChannel()
         this.props.socketConnect(this.props.auth.user)
     }
 
@@ -22,6 +24,7 @@ class Chatroom extends Component {
     componentWillUnmount() {
         console.log('Chatroom will unmount')
         this.props.socketDisconnect()
+        // this.props.stopChannel()
     }
 
     handleTestClick() {
@@ -33,7 +36,7 @@ class Chatroom extends Component {
             <div className="container text-center">
                 <h1 className="display-4">Chatroom { this.chatRoomId && '#'+this.chatRoomId }</h1>
                 <button onClick={() => this.handleTestClick()}>Send Test Message</button>
-                <Messages messages={this.props.messages}/>
+                {/* <Messages messages={this.props.messages}/> */}
             </div>
         )
     }

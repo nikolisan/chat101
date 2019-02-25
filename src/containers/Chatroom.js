@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ChatroomComponent from '../components/Chatroom';
-import { socketConnect, socketDisconnect, socketSendMessage } from '../redux/actions/socketAction';
+import { socketConnect, socketDisconnect, socketSendMessage, startChannel, stopChannel} from '../redux/actions/socketAction';
 
 const mapStateToProps = state => {
     return state

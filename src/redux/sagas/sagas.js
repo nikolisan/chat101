@@ -1,4 +1,4 @@
-import { all } from 'redux-saga/effects';
+import { all, race } from 'redux-saga/effects';
 
 import { loginWatcher, registerWatcher, logoutWatcher } from './authSagas';
 import authSagas from './authSagas';

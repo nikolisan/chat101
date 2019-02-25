@@ -31,36 +31,30 @@ console.log('Server running on port: ' + PORT);
 
 
 function updateUsernames() {
-    io.sockets.emit('usernames', usernames);
+    console.log('USERS: ', usernames)
+    io.sockets.emit('users.login', usernames);
+    
 }
 
 io.sockets.on('connection', function(socket) {
-    console.log("Socket connected with id "+ socket.id);
+    console.log("Socket connected with id "+ socket.id);    
     
     socket.on('SET_USERNAME', function(data){
-        console.log(data)
         socket.username = data.username;
         usernames.push(socket.username);
         console.log('Username for id', socket.id, 'is: ', socket.username)
         updateUsernames();
+        
     });
 
     socket.on('SEND_MESSAGE', function(data){
-        console.log('new message recieved to the server')
-        socket.emit('NEW_MESSAGE', {message: data.message, from: data.from})
-        // socket.username = data;
-        // usernames.push(socket.username);
-        // console.log('Username for id', socket.id, 'is: ', socket.username)
-        // updateUsernames();
-    });
-
-    socket.on('send_message', function(data){
-        socket.broadcast.emit('new_message', {user: socket.username, msg: data});
+        console.log('new message received to the server')
+        socket.broadcast.emit('NEW_MESSAGE', {message: data.message, from: data.from})
     });
 
     socket.on('disconnect', function() {
         if (!socket.username) {
-            console.log('Someone disconnected');
+            console.log(`Someone disconnected: ${socket.id}`);
             return
         }
         console.log('User: '+ socket.username + ' disconnected');
