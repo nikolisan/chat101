@@ -8,10 +8,10 @@
 .chat{
     height: 90%;
     overflow-y: auto;
-  }
+}
 .chat-list {
     padding: 1em 0 0 0 !important;
-  }
+}
 
 #from {
     padding: 0 0.5em;
