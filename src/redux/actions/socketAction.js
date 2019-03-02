@@ -13,9 +13,10 @@ export const socketDisconnect = () => {
     })
 }
 
-export const socketAddUser = () => {
+export const socketConnectedUsers = (users) => {
     return({
-        type: types.sADD_USER
+        type: types.sUSERS,
+        users
     })
 }
 

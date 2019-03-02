@@ -1,20 +1,26 @@
-import { sCONNECTED, sDISCONNECTED } from '../constants/types';
+import * as types from '../constants/types';
+import { routerActions } from 'connected-react-router';
 
 const initialState = {
-    isConnected: false
+    isConnected: false,
+    onlineUsers: []
 }
 
 export default function(state=initialState, action) {
     switch(action.type) {
-        case sDISCONNECTED:
+        case types.sDISCONNECTED:
             return {
                 ...state,
                 isConnected: false
             }
-        case sCONNECTED:
+        case types.sCONNECTED:
             return {
                 ...state,
                 isConnected: true
+            }
+        case types.sUSERS:
+            return {
+                onlineUsers: action.users
             }
         default:
             return state

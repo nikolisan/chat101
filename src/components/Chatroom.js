@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import Messages from './Messages';
 import SendForm from './SendForm';
+import Sidebar from './Sidebar';
 
 import '../css/chatroom.css'
 
@@ -36,11 +37,7 @@ class Chatroom extends Component {
         return (
             <div id="content" className="row m-0">
                 <div className="col-2 bg-secondary pt-4 online-area">
-                    <h4>Chatroom { this.chatRoomId && '#'+this.chatRoomId }</h4>
-                    <h5>ONLINE - <span id="online-count">15</span></h5>
-                    <ul class="list-group list-online">
-                        <li class="list-group-item online">user</li>
-                    </ul>
+                    <Sidebar onlineUsers={this.props.socket.onlineUsers}/>
                 </div>
                 <div className="col-10 bg-light main-area p-0">
                     <Messages messages={this.props.messages}/>

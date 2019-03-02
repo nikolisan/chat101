@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import { eventChannel } from 'redux-saga';
 import { fork, take, call, put, cancel } from 'redux-saga/effects';
 import {
-    socketConnect, socketDisconnect, socketAddUser, socketRemoveUser, socketNewMessage, socketSendMessage
+    socketConnect, socketDisconnect, socketConnectedUsers, socketRemoveUser, socketNewMessage, socketSendMessage
 } from '../actions/socketAction'
 import * as types from '../constants/types';
 
@@ -20,8 +20,8 @@ function subscribe(socket) {
         socket.on('NEW_MESSAGE', ({ message, from }) => {
             emit(socketNewMessage({ message, from }));
         });
-        socket.on('users.login', ({ username }) => {
-            emit(socketAddUser({ username }));
+        socket.on('users.login', (users) => {
+            emit(socketConnectedUsers(users));
         });
         socket.on('users.logout', ({ username }) => {
             emit(socketRemoveUser({ username }));
