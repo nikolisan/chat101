@@ -1,0 +1,8 @@
+node_modules
+server
+.git*
+Dockerfile*
+*.yml
+nodemon.json
+README*
+_config.yml
