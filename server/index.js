@@ -17,6 +17,12 @@ mongoose.connect(config.DB, { useNewUrlParser: true }).then(
     err => {console.log('Cannot connect to the db, '+err)}
 );
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 app.use(passport.initialize());
 require('./passport')(passport);
 
@@ -26,7 +32,7 @@ app.use(bodyParser.json());
 app.use('/api/users', users);
 
 const PORT = process.env.PORT || 9000;
-server.listen(PORT)
+server.listen(PORT, '0.0.0.0')
 console.log('Server running on port: ' + PORT);
 
 
