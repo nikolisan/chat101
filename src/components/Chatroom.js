@@ -16,6 +16,9 @@ class Chatroom extends Component {
 
     componentDidMount(){
         console.log('Chatroom did mount')
+        if (!this.props.auth.isAuthenticated) {
+            this.props.history.push('/login')
+        }
         this.props.socketConnect(this.props.auth.user)
         console.log(process.env.REACT_APP_BASE_URL)
     }
