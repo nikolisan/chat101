@@ -9,7 +9,7 @@ import jwt_decode from 'jwt-decode';
 // saga workers
 export function* registerUserAsync(action) {
     try {
-        const response = yield call(axios.post, '/api/users/register', action.user)
+        const response = yield call(axios.post, 'http://chat.andreakos.me/api/users/register', action.user)
         action.history.push("/login")
         yield put({type: types.ADD_FLASH_MESSAGE, payload: {
             message: "Registered successfully.\nPlease login.",
@@ -27,7 +27,7 @@ export function* registerUserAsync(action) {
 
 export function* loginUserAsync(action) {
     try {
-        const response = yield call(axios.post, '/api/users/login', action.user)
+        const response = yield call(axios.post, 'http://chat.andreakos.me/api/users/login', action.user)
         const { token } = response.data;
         localStorage.setItem('jwtToken', token);
         setAuthToken(token);

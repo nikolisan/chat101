@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const cors = require('cors');
 
 const config = require('./config/db');
 const users = require('./routes/user');
@@ -17,11 +18,8 @@ mongoose.connect(config.DB, { useNewUrlParser: true }).then(
     err => {console.log('Cannot connect to the db, '+err)}
 );
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.use(cors());
+app.options('*', cors());
 
 app.use(passport.initialize());
 require('./passport')(passport);
@@ -33,7 +31,7 @@ app.use('/api/users', users);
 
 const PORT = process.env.PORT || 9000;
 server.listen(PORT, '0.0.0.0')
-console.log('Server running on port: ' + PORT);
+console.log('Server running on 0.0.0.0:' + PORT);
 
 
 function updateUsernames() {

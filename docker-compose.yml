@@ -1,0 +1,34 @@
+version: '3'
+services:
+  backend:
+    container_name: backend
+    image: 'nickan/chat101-back:v1.0.0'
+    expose:
+      - 9000
+    ports:
+      - '9000:9000'
+    networks: 
+      chatnet:
+        ipv4_address: 172.20.0.10
+    command: node index.js
+
+  client:
+    container_name: client
+    image: 'nickan/chat101-front:v1.0.1'
+    expose:
+      - 5000
+    ports:
+      - 80:5000
+    networks: 
+      chatnet:
+        ipv4_address: 172.20.0.20
+    command: serve -s build
+    depends_on:
+      - backend
+
+networks: 
+  chatnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
