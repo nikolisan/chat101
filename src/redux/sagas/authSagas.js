@@ -6,10 +6,12 @@ import * as types from '../constants/types';
 import setAuthToken from '../../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 
+const BASE_URL = process.env.REACT_APP_BASE_URL
+
 // saga workers
 export function* registerUserAsync(action) {
     try {
-        const response = yield call(axios.post, '/api/users/register', action.user)
+        const response = yield call(axios.post, BASE_URL + '/api/users/register', action.user)
         action.history.push("/login")
         yield put({type: types.ADD_FLASH_MESSAGE, payload: {
             message: "Registered successfully.\nPlease login.",
@@ -27,7 +29,7 @@ export function* registerUserAsync(action) {
 
 export function* loginUserAsync(action) {
     try {
-        const response = yield call(axios.post, '/api/users/login', action.user)
+        const response = yield call(axios.post, BASE_URL + '/api/users/login', action.user)
         const { token } = response.data;
         localStorage.setItem('jwtToken', token);
         setAuthToken(token);

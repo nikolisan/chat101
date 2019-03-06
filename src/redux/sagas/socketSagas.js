@@ -7,7 +7,7 @@ import {
 import * as types from '../constants/types';
 
 function connect() {
-    const socket = io('http://localhost:9000');
+    const socket = io(process.env.REACT_APP_BASE_URL);
     return new Promise(resolve => {
         socket.on('connect', () => {
             resolve(socket);

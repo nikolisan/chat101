@@ -17,6 +17,7 @@ class Chatroom extends Component {
     componentDidMount(){
         console.log('Chatroom did mount')
         this.props.socketConnect(this.props.auth.user)
+        console.log(process.env.REACT_APP_BASE_URL)
     }
 
     componentWillReceiveProps(nextProps) {
