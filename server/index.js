@@ -11,6 +11,11 @@ const config = require('./config/db');
 const users = require('./routes/user');
 
 let usernames = {};
+let roomMessages = {
+    general: [],
+    coding: [],
+    gaming: []
+}
 
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(
     () => {console.log('Database is connected')},
@@ -39,14 +44,17 @@ console.log('Server running on port: ' + PORT);
 function updateUsernames() {
     console.log('USERS: ', usernames)
     io.sockets.emit('users.login', usernames);
-    
+}
+
+function updateMessageCache(roomId, message) {
+    roomMessages[roomId].push(message)
+    console.log(roomMessages)
 }
 
 io.sockets.on('connection', function(socket) {
     console.log("Socket connected with id " + socket.id);    
     
     socket.on('ROOM', function(roomId) {
-        console.log("ROOM ID: ", roomId)
         socket.join(roomId)
         socket.room = roomId
     })
@@ -58,14 +66,13 @@ io.sockets.on('connection', function(socket) {
     socket.on('SET_USERNAME', function(data){
         socket.username = data.username;
         usernames[socket.username] = { id: socket.id, room: socket.room }
-        console.log('Username for id', socket.id, 'is: ', socket.username)
         updateUsernames();
         
     });
 
     socket.on('SEND_MESSAGE', function(data){
         console.log('new message received to the server')
-        console.log(data)
+        updateMessageCache(data.roomId, {message: data.message, from: data.from})
         socket.to(data.roomId).emit('NEW_MESSAGE', {room: data.roomId, message: data.message, from: data.from})
     });
 
