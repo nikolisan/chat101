@@ -19,12 +19,16 @@ class Chatroom extends Component {
         if (!this.props.auth.isAuthenticated) {
             this.props.history.push('/login')
         }
-        this.props.socketConnect(this.props.auth.user)
-        console.log(process.env.REACT_APP_BASE_URL)
+        this.props.socketConnect(this.props.auth.user, this.props.match.params.id)
     }
 
     componentWillReceiveProps(nextProps) {
-        // console.dir(nextProps.messages)
+        if (nextProps.match.params.id !== this.props.match.params.id) {
+            this.props.socketDisconnect()
+            this.props.socketConnect(this.props.auth.user, nextProps.match.params.id)
+        }
+        console.log("* Chatroom willRecieveProps")
+        console.dir(nextProps)
     }
 
     componentWillUnmount() {
@@ -33,8 +37,8 @@ class Chatroom extends Component {
     }
 
     handleFormSubmit(message) {
-        this.props.socketSendMessage({message: message, from: this.props.auth.user.username})
-        this.props.socketNewMessage({message: message, from: 'Me'})
+        this.props.socketSendMessage({roomId: this.props.match.params.id, message: message, from: this.props.auth.user.username})
+        this.props.socketNewMessage({room: this.props.match.params.id, message: message, from: 'Me'})
     }
 
     render() {
@@ -44,7 +48,7 @@ class Chatroom extends Component {
                     <Sidebar onlineUsers={this.props.socket.onlineUsers}/>
                 </div>
                 <div className="col-10 bg-light main-area p-0">
-                    <Messages messages={this.props.messages}/>
+                    <Messages roomId={this.props.match.params.id} messages={this.props.messages}/>
                     <SendForm sendMessage={this.handleFormSubmit}/>
                 </div>
             </div>

@@ -1,9 +1,10 @@
 import * as types from '../constants/types'
 
-export const socketConnect = (user) => {
+export const socketConnect = (user, roomId) => {
     return({
         type: types.sLOGIN,
-        user
+        user, 
+        roomId
     })
 }
 

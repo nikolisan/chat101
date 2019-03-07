@@ -7,8 +7,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    socketConnect: (user) => {
-        dispatch(socketConnect(user))
+    socketConnect: (user, roomId) => {
+        dispatch(socketConnect(user, roomId))
     },
     socketDisconnect: () => {
         dispatch(socketDisconnect())

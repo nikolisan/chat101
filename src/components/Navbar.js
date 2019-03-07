@@ -12,7 +12,16 @@ const Navbar = (props) => {
     const authLinks = (
         <ul className="navbar-nav ml-auto">
             <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/chat">Chat</Link></li>
+            <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Rooms
+                </a>
+                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <Link className="dropdown-item" to="/chat/general">#general</Link>
+                    <Link className="dropdown-item" to="/chat/coding">#coding</Link>
+                    <Link className="dropdown-item" to="/chat/gaming">#gaming</Link>
+                </div>
+            </li>
             <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {user.username}

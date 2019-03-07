@@ -6,10 +6,11 @@ import {
 } from '../actions/socketAction'
 import * as types from '../constants/types';
 
-function connect() {
+function connect(roomId) {
     const socket = io(process.env.REACT_APP_BASE_URL);
     return new Promise(resolve => {
         socket.on('connect', () => {
+            socket.emit("ROOM", roomId)
             resolve(socket);
         });
     });
@@ -17,8 +18,8 @@ function connect() {
 
 function subscribe(socket) {
     return eventChannel(emit => {
-        socket.on('NEW_MESSAGE', ({ message, from }) => {
-            emit(socketNewMessage({ message, from }));
+        socket.on('NEW_MESSAGE', ({ room, message, from }) => {
+            emit(socketNewMessage({ room, message, from }));
         });
         socket.on('users.login', (users) => {
             emit(socketConnectedUsers(users));
@@ -56,8 +57,8 @@ function* handleIO(socket) {
 
 function* flow() {
     while (true) {
-        let { user } = yield take(types.sLOGIN);
-        const socket = yield call(connect);
+        let { user, roomId } = yield take(types.sLOGIN);
+        const socket = yield call(connect, roomId);
         yield put({type: types.sCONNECTED})
         socket.emit('SET_USERNAME', { username: user.username });
 

@@ -22,6 +22,9 @@ class Messages extends Component {
     constructor(props) {
         super(props);
         this.messagesEnd = createRef();
+        this.state = {
+            messages: []
+        }
     }
 
     scrollToBottom() {
@@ -32,14 +35,19 @@ class Messages extends Component {
         this.scrollToBottom()
     }
 
+    componentWillReceiveProps(nextProps) {
+        const newRoomMessages = nextProps.messages.messages.filter(message => message.room == nextProps.roomId)
+        this.setState({messages: newRoomMessages})
+    }
+
     render() {
         return (
             <div className="chat mx-0">
                 <ul className="chat-list pt-1">
-                    { _.isEmpty(this.props.messages.messages) 
+                    { _.isEmpty(this.state.messages) 
                     ? <Message message={{message: "No messages to display", from: ""}}/> 
-                    : this.props.messages.messages.map((msg, ind) => 
-                        {
+                    : this.state.messages.map((msg, ind) => 
+                        {   
                             if(msg.from == "Me") {
                                 return (<MessageFromMe key={ind} message={msg}/>)
                             } else {

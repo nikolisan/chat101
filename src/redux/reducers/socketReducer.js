@@ -3,7 +3,7 @@ import { routerActions } from 'connected-react-router';
 
 const initialState = {
     isConnected: false,
-    onlineUsers: []
+    onlineUsers: {}
 }
 
 export default function(state=initialState, action) {

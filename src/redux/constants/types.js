@@ -13,3 +13,4 @@ export const sUSERS = 'USERS';
 export const sREMOVE_USER = 'REMOVE_USER';
 export const sNEW_MESSAGE = 'NEW_MESSAGE';
 export const sSEND_MESSAGE = 'SEND_MESSAGE';
+export const sJOIN_ROOM = 'JOIN_ROOM';

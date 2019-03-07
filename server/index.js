@@ -10,7 +10,7 @@ const passport = require('passport');
 const config = require('./config/db');
 const users = require('./routes/user');
 
-let usernames = [];
+let usernames = {};
 
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(
     () => {console.log('Database is connected')},
@@ -43,11 +43,21 @@ function updateUsernames() {
 }
 
 io.sockets.on('connection', function(socket) {
-    console.log("Socket connected with id "+ socket.id);    
+    console.log("Socket connected with id " + socket.id);    
     
+    socket.on('ROOM', function(roomId) {
+        console.log("ROOM ID: ", roomId)
+        socket.join(roomId)
+        socket.room = roomId
+    })
+    socket.on('PRIVATE_MESSAGE', function(data){
+        const {reciever, sender, message} = data
+        socket.to(usernames[reciever].id).emit('NEW_MESSAGE', {message: message, from: sender})
+    })
+
     socket.on('SET_USERNAME', function(data){
         socket.username = data.username;
-        usernames.push(socket.username);
+        usernames[socket.username] = { id: socket.id, room: socket.room }
         console.log('Username for id', socket.id, 'is: ', socket.username)
         updateUsernames();
         
@@ -55,7 +65,8 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('SEND_MESSAGE', function(data){
         console.log('new message received to the server')
-        socket.broadcast.emit('NEW_MESSAGE', {message: data.message, from: data.from})
+        console.log(data)
+        socket.to(data.roomId).emit('NEW_MESSAGE', {room: data.roomId, message: data.message, from: data.from})
     });
 
     socket.on('disconnect', function() {
@@ -64,7 +75,7 @@ io.sockets.on('connection', function(socket) {
             return
         }
         console.log('User: '+ socket.username + ' disconnected');
-        usernames.splice(usernames.indexOf(socket.username), 1);
+        delete usernames[socket.username]
         updateUsernames();
     });
 });
